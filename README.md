@@ -90,5 +90,5 @@ Open `index.html` in a browser. For the service worker and install prompt you ne
 origin rather than `file://`:
 
 ```sh
-python3 -m http.server 8000   # then visit http://localhost:8000/
+python -m http.server 8000   # then visit http://localhost:8000/
 ```
