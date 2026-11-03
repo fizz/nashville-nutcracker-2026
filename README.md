@@ -84,6 +84,37 @@ called for that event.
 Bump `CACHE` in `sw.js` (e.g. `nutcracker-v2`) after a schedule change if you want phones
 that already have it installed to drop their old cached copy immediately.
 
+## Regenerating one dancer's calendar
+
+`make-ics.py` writes a `.ics` for a single role and cast, for feeding a subscribed or
+shared calendar. It reads the published page, so no checkout has to be current:
+
+```sh
+python -I make-ics.py live "Baby Mice" Purple Kamala > kamala.ics
+```
+
+Arguments are the schedule source (`live`, a URL, or a path to `index.html`), the role,
+the cast colour, and the dancer's name for the event titles.
+
+**Pass the calendar's current export as a fifth argument whenever one exists:**
+
+```sh
+python -I make-ics.py live "Baby Mice" Purple Kamala current-export.ics > kamala.ics
+```
+
+Calendar apps match events by UID. With the fifth argument the script reuses the UID of
+every event that already exists at the same date and time, so importing the result
+**updates those entries in place**. Without it, every event gets a fresh UID and the
+import adds a second copy of the whole calendar. On a calendar shared with family, each
+duplicate also sends every participant a notification.
+
+Events present in the calendar but absent from the schedule are left alone; the import
+never deletes. New events, such as a rehearsal added after the last export, come through
+as additions.
+
+The output carries a real `VTIMEZONE` for `America/Chicago` with both DST rules, so the
+November 1 transition resolves rather than being guessed by the calendar app.
+
 ## Local preview
 
 Open `index.html` in a browser. For the service worker and install prompt you need a real
