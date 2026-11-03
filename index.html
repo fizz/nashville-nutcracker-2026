@@ -121,8 +121,7 @@ select{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1px solid
 
   <div class="actions">
     <button type="button" class="primary" id="btnCal">Add all to calendar</button>
-    <button type="button" id="btnCopy">Copy</button>
-    <button type="button" id="btnShare">Share</button>
+    <button type="button" id="btnCopy">Copy schedule</button>
   </div>
 
   <div class="card small">
@@ -378,18 +377,6 @@ async function copyText(){
     toast(ok ? 'Schedule copied.' : 'Could not copy automatically.');
   }
 }
-async function shareLink(){
-  writeHash();
-  const url = location.href;
-  const title = role.value+' — '+color.value+' cast · Nutcracker schedule';
-  if(navigator.share){
-    try{ await navigator.share({title, url}); return; }
-    catch(err){ if(err && err.name==='AbortError') return; }
-  }
-  try{ await navigator.clipboard.writeText(url); toast('Link copied.'); }
-  catch(err){ toast('Link: '+url); }
-}
-
 /* ---------- toast ---------- */
 let toastTimer;
 function toast(msg){
@@ -436,7 +423,6 @@ $('#segUpcoming').onclick = () => setScope('upcoming');
 $('#segAll').onclick = () => setScope('all');
 $('#btnCal').onclick = addAll;
 $('#btnCopy').onclick = copyText;
-$('#btnShare').onclick = shareLink;
 out.addEventListener('click', ev => {
   const b = ev.target.closest('[data-add]');
   if(b) addOne(Number(b.dataset.add));
@@ -460,7 +446,7 @@ addEventListener('online', netState); addEventListener('offline', netState); net
   if(standalone) return;
   const ios = /iPhone|iPad|iPod/.test(navigator.userAgent);
   el.innerHTML = ios
-    ? '<b>Keep it one tap away:</b> tap the Share button in Safari, then <b>Add to Home Screen</b>.<br><br>'
+    ? '<b>Keep it one tap away:</b> tap the share icon in Safari\'s bottom toolbar. It is a square with an arrow. Then choose <b>Add to Home Screen</b>.<br><br>'
     : '<b>Keep it one tap away:</b> use your browser menu and choose <b>Install app</b> or <b>Add to Home screen</b>.<br><br>';
   addEventListener('beforeinstallprompt', e => {
     e.preventDefault();

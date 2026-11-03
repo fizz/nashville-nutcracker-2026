@@ -27,9 +27,9 @@ Pick a **role** and a **cast color** and it shows only that dancer's calls:
   there is a connection, so schedule updates still land.
 - **Remembers your dancer.** Your role/cast/view are saved on the device and written into
   the URL, so the page reopens where you left it.
-- **Shareable links.** The Share button copies a link like
-  `...#role=Baby%20Mice&cast=Purple` that opens straight to that dancer's schedule —
-  handy for the other parent or a carpool thread.
+- **Shareable links.** The address bar always holds the current selection, as
+  `...#role=Baby%20Mice&cast=Purple`. Share that URL from the browser and it opens straight
+  to that dancer's schedule, which suits the other parent or a carpool thread.
 - **Add to calendar** hands the `.ics` to the phone's share sheet, so it can go straight
   into Apple Calendar or Google Calendar. On desktop it downloads instead.
 - Tap a venue name for directions.
