@@ -131,7 +131,7 @@ select{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1px solid
     Listed start times include the call time, when the notice gave one. A listed start is therefore
     sometimes earlier than the rehearsal time in the note.<br><br>
     <span id="installHint"></span>
-    <b>Schedule last updated:</b> November 2, 2026<br><br>
+    <b>Schedule last updated:</b> November 4, 2026<br><br>
     Questions, corrections or thanks:
     <a href="mailto:fizz@fastmail.fm?subject=Nutcracker%20schedule%20helper">fizz@fastmail.fm</a>
   </div>
@@ -142,6 +142,12 @@ select{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1px solid
     schedule does not know about it yet. Please tell me. Past dates sit under
     <b>All dates</b>. Look there to check a correction after the day has gone.</p>
     <ul>
+      <li><b>November 4.</b> Added the Act I and Act II run-through calls from
+        November 13 through November 20. Each date calls one cast color for the
+        other roles and all three Claras. The earlier version had no Act II calls
+        after November 12 and showed Clara only on her cast-color dates.
+        Source: Nashville Ballet email, “Schedule 11/13-11/20,” November 3,
+        2026, 6:27 p.m.</li>
       <li><b>November 2.</b> Correction for Clara and Fritz. The master schedule calls
         them every day from November 2 to November 12, in all casts. This page showed
         them one cast per day, so two casts out of three saw no call. Every other role
@@ -169,6 +175,57 @@ const $ = s => document.querySelector(s);
 const role = $('#role'), color = $('#color'), out = $('#out'), nextBox = $('#next');
 const VENUE = { 'Tennessee Performing Arts Center (TPAC)':'TPAC', 'The Martin Center for Nashville Ballet':'The Martin Center' };
 const DOUBLE = ['Red','Green'], TRIPLE = ['Blue','Purple','Yellow'];
+
+// Nashville Ballet's later family notice fills in the calls that the master PDF
+// leaves implicit: November 13 and 16–20 each have an Act I and Act II run.
+// One color attends each run, except all three Claras attend both acts every day.
+// Keep Clara separate from the broad act events so a Clara never depends on the
+// color assigned to everybody else.
+const ACT1_WEEK_ROLES = [
+  'role:Party Girls', 'role:Party Boys', 'role:Fritz',
+  'role:Baby Mice', 'role:Medium Mice', 'role:Frontier Soldiers',
+  'role:Infantry', 'role:Teddy Bear Cavalry', 'role:Commodore Cavalry'
+];
+const ACT2_WEEK_ROLES = [
+  'role:Garden Fairies', 'role:Bon Bons', 'role:Russians', 'role:Lambs'
+];
+const ACT_RUN_WEEK = new Set([
+  '2026-11-13', '2026-11-16', '2026-11-17',
+  '2026-11-18', '2026-11-19', '2026-11-20'
+]);
+for (const act1 of DATA.events.filter(e =>
+  ACT_RUN_WEEK.has(e.date) && e.title === 'Act I')) {
+  act1.target = ACT1_WEEK_ROLES;
+  const act2Note = act1.note.replace('4:00–5:00', '5:00–6:00');
+  DATA.events.push(
+    {
+      ...act1,
+      target: ['role:Clara'],
+      double: [],
+      triple: TRIPLE,
+      title: 'Act I — Clara',
+      note: 'All casts of Clara. ' + act1.note
+    },
+    {
+      ...act1,
+      start: '16:45',
+      end: '18:00',
+      target: ACT2_WEEK_ROLES,
+      title: 'Act II',
+      note: act2Note
+    },
+    {
+      ...act1,
+      start: '16:45',
+      end: '18:00',
+      target: ['role:Clara'],
+      double: [],
+      triple: TRIPLE,
+      title: 'Act II — Clara',
+      note: 'All casts of Clara. ' + act2Note
+    }
+  );
+}
 let scope = 'upcoming';
 
 /* ---------- selection state: URL hash > saved choice > default ---------- */

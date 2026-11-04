@@ -1,6 +1,6 @@
 /* Offline support: network-first so schedule updates land, cache fallback so the
    page still opens backstage / in the TPAC basement with no signal. */
-const CACHE = 'nutcracker-v8';
+const CACHE = 'nutcracker-v9';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon.svg',
                 './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 

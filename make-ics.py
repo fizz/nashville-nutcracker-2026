@@ -45,6 +45,40 @@ if len(sys.argv) > 5:
     print(f"reusing {len(KEEP)} existing UIDs", file=sys.stderr)
 DATA = json.loads(re.search(r"const DATA=(\{.*?\});\s*\n",
                             page, re.S).group(1))
+
+# The family notice supplied the omitted Act I and Act II runs for November
+# 13 and 16–20.  Keep this normalization here as well as in index.html: the
+# browser runs that JavaScript, while this exporter reads the literal DATA
+# object directly.  Clara is deliberately separate because every Clara is
+# called on every one of these dates, irrespective of the day's cast color.
+ACT_RUN_WEEK = {
+    "2026-11-13", "2026-11-16", "2026-11-17",
+    "2026-11-18", "2026-11-19", "2026-11-20",
+}
+ACT1_WEEK_ROLES = [
+    "role:Party Girls", "role:Party Boys", "role:Fritz",
+    "role:Baby Mice", "role:Medium Mice", "role:Frontier Soldiers",
+    "role:Infantry", "role:Teddy Bear Cavalry", "role:Commodore Cavalry",
+]
+ACT2_WEEK_ROLES = [
+    "role:Garden Fairies", "role:Bon Bons", "role:Russians", "role:Lambs",
+]
+for act1 in [event for event in DATA["events"]
+             if event["date"] in ACT_RUN_WEEK and event["title"] == "Act I"]:
+    act1["target"] = ACT1_WEEK_ROLES
+    act2_note = act1["note"].replace("4:00–5:00", "5:00–6:00")
+    common = dict(act1)
+    DATA["events"].extend([
+        {**common, "target": ["role:Clara"], "double": [],
+         "triple": ["Blue", "Purple", "Yellow"], "title": "Act I — Clara",
+         "note": "All casts of Clara. " + act1["note"]},
+        {**common, "start": "16:45", "end": "18:00",
+         "target": ACT2_WEEK_ROLES, "title": "Act II", "note": act2_note},
+        {**common, "start": "16:45", "end": "18:00", "target": ["role:Clara"],
+         "double": [], "triple": ["Blue", "Purple", "Yellow"],
+         "title": "Act II — Clara", "note": "All casts of Clara. " + act2_note},
+    ])
+
 roles = DATA["roles"]
 if role not in roles:
     sys.exit(f"unknown role {role!r}; known: {sorted(roles)}")

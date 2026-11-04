@@ -47,7 +47,7 @@ listed times.
 This is an unofficial parent-built helper. Nashville Ballet's official notices and schedule
 updates always take priority.
 
-Schedule last updated: November 1, 2026.
+Schedule last updated: November 4, 2026.
 
 ## Publishing with GitHub Pages
 
@@ -68,6 +68,11 @@ For this repository that URL is:
 
 All the schedule data is the `const DATA = {...}` object near the top of the `<script>` in
 `index.html` — roles with their cast system and scene groups, then one entry per event:
+
+The November 13–20 Act I/Act II correction immediately after that object is intentional:
+it separates the day’s color-based role calls from the all-casts-of-Clara calls. Keep the
+same split if Nashville Ballet changes those run-throughs. `make-ics.py` applies the same
+normalization so a downloaded calendar cannot drift from the page.
 
 ```json
 { "date": "2026-12-12", "start": "17:30", "end": "21:00",
