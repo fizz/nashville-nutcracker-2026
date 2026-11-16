@@ -47,7 +47,7 @@ listed times.
 This is an unofficial parent-built helper. Nashville Ballet's official notices and schedule
 updates always take priority.
 
-Schedule last updated: November 4, 2026.
+Schedule last updated: November 16, 2026.
 
 ## Publishing with GitHub Pages
 
